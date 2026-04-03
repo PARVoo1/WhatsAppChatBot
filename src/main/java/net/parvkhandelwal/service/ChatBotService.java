@@ -28,7 +28,6 @@ public class ChatBotService {
         String replyText= switch (incomingText) {
             case "hi" -> "Hello";
             case "bye" -> "Goodbye";
-            case "this is a text message" -> "Hello! I am Parv's WhatsApp Bot, successfully receiving webhook data!";
             default -> "I am a simple simulation bot. I only understand 'Hi' and 'Bye'.";
         };
         log.info("🤖 Bot replied to [{}]: {}", request.getSender(), replyText);
