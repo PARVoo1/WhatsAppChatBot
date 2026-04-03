@@ -28,6 +28,7 @@ public class ChatBotService {
         String replyText= switch (incomingText) {
             case "hi" -> "Hello";
             case "bye" -> "Goodbye";
+            case "this is a text message" -> "Hello! I am Parv's WhatsApp Bot, successfully receiving webhook data!";
             default -> "I am a simple simulation bot. I only understand 'Hi' and 'Bye'.";
         };
         log.info("🤖 Bot replied to [{}]: {}", request.getSender(), replyText);
@@ -39,12 +40,11 @@ public class ChatBotService {
             RestTemplate restTemplate = new RestTemplate();
             String url = "https://graph.facebook.com/v20.0/" + phoneNumberId + "/messages";
 
-            // Set up the Headers (This is where your Token acts as the password)
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Authorization", "Bearer " + apiToken);
 
-            // Set up the JSON Body
+
             String payload = "{ \"messaging_product\": \"whatsapp\", \"to\": \"" + recipientPhone + "\", \"type\": \"text\", \"text\": { \"body\": \"" + messageText + "\" } }";
 
             HttpEntity<String> entity = new HttpEntity<>(payload, headers);
@@ -54,7 +54,7 @@ public class ChatBotService {
             log.info("✅ Successfully delivered reply to Meta!");
 
         } catch (Exception e) {
-            log.error("❌ Failed to send outbound message: {}", e.getMessage());
+            log.error("Failed to send outbound message: {}", e.getMessage());
         }
     }
 }
