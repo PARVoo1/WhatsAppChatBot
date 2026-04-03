@@ -15,19 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class WebHookController {
     private final ChatBotService chatBotService;
 
-    @GetMapping("/webhook")
-    public ResponseEntity<String> verifyWebhook(
-            @RequestParam(value = "hub.mode", required = false) String mode,
-            @RequestParam(value = "hub.verify_token", required = false) String token,
-            @RequestParam(value = "hub.challenge", required = false) String challenge
-    ) {
-        String verifyToken = "test123";
-
-        if ("subscribe".equals(mode) && verifyToken.equals(token)) {
-            log.info("Webhook verified!");
-            return ResponseEntity.ok(challenge);
-        }
-        return ResponseEntity.status(403).body("Forbidden");
+    @GetMapping
+    public ResponseEntity<String> verifyWebhook(@RequestParam(value = "hub.challenge", required = false) String challenge) {
+        return ResponseEntity.ok(challenge != null ? challenge : "Webhook Server is UP. Waiting for Meta Handshake...");
     }
     @PostMapping
     public ResponseEntity<ChatResponse> receiveMessage(@RequestBody ChatRequest chatRequest) {
