@@ -23,15 +23,18 @@ public class ChatBotService {
 
 
     public ChatResponse processMessage(ChatRequest request) {
-        log.info("incoming message from [{}]: {}", request.getSender(), request.getMessage());
-        String incomingText = request.getMessage()!= null ? request.getMessage().trim().toLowerCase() : "";
+        String sender = request.getSenderPhone();
+        String messageText = request.getMessageText();
+        log.info("incoming message from [{}]: {}",sender,messageText);
+        String incomingText = messageText!= null ? messageText.trim().toLowerCase() : "";
         String replyText= switch (incomingText) {
             case "hi" -> "Hello";
             case "bye" -> "Goodbye";
+
             default -> "I am a simple simulation bot. I only understand 'Hi' and 'Bye'.";
         };
-        log.info("🤖 Bot replied to [{}]: {}", request.getSender(), replyText);
-        sendReplyToMeta(request.getSender(), replyText);
+        log.info("🤖 Bot replied to [{}]: {}",sender, replyText);
+        sendReplyToMeta(sender, replyText);
         return new ChatResponse(replyText);
     }
     private void sendReplyToMeta(String recipientPhone, String messageText) {
